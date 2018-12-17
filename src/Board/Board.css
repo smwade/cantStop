@@ -1,4 +1,11 @@
 .board-wrapper {
-    width: 400px;
-    height: 400px;
+    width: 800px;
+    height: 800px;
+}
+
+@media screen and (max-width: 800px) {
+	.board-wrapper {
+		width: 100%;
+		height: 100%;
+	}
 }
