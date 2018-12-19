@@ -26,87 +26,12 @@ class App extends Component {
         ],
         tmpPieces: [],
 				players: [],
-				probCalcVal1: 2,
-				probCalcVal2: 2,
-				probCalcProb: 0
     }
 	};
 
-	allOutcomes = () => {
-		let ans = [];
-		for (let i=1; i < 7; i++){
-			for (let j=1; j < 7; j++){
-				for (let k=1; k < 7; k++){
-					for (let l=1; l < 7; l++){
-						ans.push([i,j,k,l])
-					}
-				}
-			}
-		}
-		return ans
-	}
 
 	componentDidMount() {
 		// set probability table
-		let prob = {}
-		let num_outcomes = 0;
-		let outcomes = this.allOutcomes();
-		for (let rIdx=0; rIdx<outcomes.length; rIdx++) {
-			let roll = outcomes[rIdx]; 
-			for (let i=0; i<settings.NUM_DICE; i++) { 
-				for (let j=0; j<settings.NUM_DICE; j++) { 
-					if (i !== j) {
-						let otherIdxs = [];
-						for (let k=0; k < settings.NUM_DICE; k++) {
-							if (i !== k && j !== k) {
-								otherIdxs.push(k);
-							}
-						}
-						let [idx1, idx2] = otherIdxs;
-						let t1 = roll[i] + roll[j];
-						let t2 = roll[idx1] + roll[idx2];
-						let key = this.getKey(t1, t2);
-						if (key in prob) {
-							prob[key] = prob[key] + 1;
-						} else {
-							prob[key] = 1;
-						}
-						num_outcomes++;
-					}
-				}
-			}
-		}
-		for (let x in prob) {
-			prob[x] = prob[x] / num_outcomes;
-		}
-		this.setState({prob: prob});
-	}
-
-	getKey = (v1, v2) => {
-		if (v1 < v2) {
-			return `${v1}-${v2}`
-		} else {
-			return `${v2}-${v1}`
-		}
-	}
-
-	getProb = (v1, v2=null) => {
-		if (v2) {
-			let key = this.getKey(v1, v2);
-			return this.state.prob[key]
-		} else {
-			let totalProb = 0
-			for (let v=0; v < 13; v++) {
-				totalProb = totalProb + this.getProb(v1, v);
-			}
-			return totalProb;
-		}
-	}
-
-	decodeKey = (key) => {
-		let ans = key.split("-");
-		ans = ans.map(x => parseInt(x));
-		return ans
 	}
 
 
