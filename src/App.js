@@ -6,7 +6,8 @@ import './App.css';
 import Board from './Board/Board.js'
 import Marker from './Marker/Marker.js'
 import Dice from './Dice/Dice.js'
-import { pickRandomNumber } from './utils.js'
+import { pickRandomNumber  } from './utils.js'
+import ProbCalc from './ProbCalc.js'
 import * as settings from './settings.js'
 
 
@@ -14,7 +15,7 @@ class App extends Component {
 
   constructor(props) {
     super(props)
-  
+		this.probCalc = new ProbCalc(); 
     this.state = {
         curPos: {
           row: null,
@@ -28,30 +29,6 @@ class App extends Component {
 				players: [],
     }
 	};
-
-
-	componentDidMount() {
-		// set probability table
-	}
-
-
-getRollValues = (roll) => { let ans = new Set([]);
-	if (roll) {
-		for (let i=0; i < roll.length-1; i++){
-			for (let j=i+1; j < roll.length; j++){
-				let sum1 = roll[i]+roll[j];
-				let sum2 = 0;
-				for (let k=0; k < roll.length; k++) {
-					if (i !== k && j !== k) {
-						sum2 = sum2 + roll[k];	
-					}
-				}
-				ans.add(this.getKey(sum1, sum2));
-			}
-		}
-	}
-	return Array.from(ans);
-}
 
   parseRow = (str) => {
     return parseInt(str.substr(1,2));
@@ -102,16 +79,16 @@ getRollValues = (roll) => { let ans = new Set([]);
 	
 	submitForm = (event) => {
 		event.preventDefault();
-		this.setState({probCalcProb: this.getProb(this.state.probCalcVal1, this.state.probCalcVal2)});
+		this.setState({probCalcProb: this.probCalc.getProb(this.state.probCalcVal1, this.state.probCalcVal2)});
 	}
 
 	handleFormChange = (event) => {
 		if (event.target.getAttribute("name") === "val1") {
 			this.setState({probCalcVal1: parseInt(event.target.value)});
-			this.setState({probCalcProb: this.getProb(this.state.probCalcVal1, this.state.probCalcVal2)});
+			this.setState({probCalcProb: this.probCalc.getProb(this.state.probCalcVal1, this.state.probCalcVal2)});
 		} else {
 			this.setState({probCalcVal2: parseInt(event.target.value)});
-			this.setState({probCalcProb: this.getProb(this.state.probCalcVal1, this.state.probCalcVal2)});
+			this.setState({probCalcProb: this.probCalc.getProb(this.state.probCalcVal1, this.state.probCalcVal2)});
 		}
 	}
 
